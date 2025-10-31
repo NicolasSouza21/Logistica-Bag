@@ -1,19 +1,31 @@
-/* ✨ CÓDIGO NOVO AQUI */
-/* Arquivo: src/pages/LoginPage.css */
+/* ✨ ARQUIVO ATUALIZADO: src/pages/LoginPage.css */
 
+/*
+  -- CONTAINER PRINCIPAL --
+  Usa um gradiente radial sutil para dar profundidade ao fundo,
+  focando a atenção no formulário central.
+*/
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f0f2f5;
+  background-color: var(--color-background);
+  background-image: radial-gradient(circle at center, #1f2937, var(--color-background) 60%);
 }
 
+/*
+  -- ESTILO DO FORMULÁRIO --
+  O formulário agora tem um fundo semitransparente (efeito glassmorphism),
+  bordas suaves e uma sombra que o destaca.
+*/
 .login-form {
-  padding: 2rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  background: rgba(31, 41, 55, 0.8); /* Fundo com transparência */
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(10px); /* Efeito de desfoque para o "vidro" */
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -23,48 +35,82 @@
 
 .login-form h2 {
   text-align: center;
-  color: #333;
+  color: var(--color-text-primary);
   margin-bottom: 1rem;
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
+  font-weight: 600;
 }
 
 .input-group label {
   margin-bottom: 0.5rem;
-  color: #555;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
 }
 
+/*
+  -- CAMPOS DE INPUT --
+  Inputs com design limpo que ganham um brilho laranja ao serem focados,
+  melhorando o feedback visual para o usuário.
+*/
 .input-group input {
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
   font-size: 1rem;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
+.input-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.3); /* Brilho externo sutil */
+}
+
+/*
+  -- BOTÃO DE LOGIN DINÂMICO --
+  O destaque da página. O botão tem um gradiente animado, sombra e um
+  efeito de "levantar" ao passar o mouse, tornando a ação principal
+  muito mais atraente.
+*/
 .login-form button {
   padding: 0.75rem;
-  background-color: #007bff;
+  background: linear-gradient(45deg, var(--color-primary), var(--color-accent-gold));
+  background-size: 200% 200%;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+  animation: gradient-animation 4s ease infinite;
 }
 
 .login-form button:hover {
-  background-color: #0056b3;
+  transform: translateY(-3px); /* Efeito de elevação */
+  box-shadow: var(--shadow-glow);
 }
-/* Adicione isso ao final do seu LoginPage.css */
+
+.login-form button:active {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Animação para o gradiente do botão */
+@keyframes gradient-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Mensagem de erro estilizada */
 .error-message {
-  color: #d93025;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  border-radius: 4px;
+  color: white;
+  background-color: rgba(239, 68, 68, 0.3);
+  border: 1px solid var(--color-error);
+  border-radius: var(--border-radius);
   padding: 0.75rem;
   text-align: center;
-  margin-bottom: 1rem;
 }

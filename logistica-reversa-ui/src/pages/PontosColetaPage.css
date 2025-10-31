@@ -1,48 +1,71 @@
-/* ✨ CÓDIGO NOVO E COMPLETO AQUI */
+/* ✨ ARQUIVO ATUALIZADO E CORRIGIDO: src/pages/PontosColetaPage.css */
 
-/* As classes principais como .page-container, .page-header, .content-card, etc.,
-   já são herdadas do nosso CSS global (index.css) e do Layout,
-   mantendo a consistência. */
-
-/* Um container para a tabela, que permite rolagem horizontal em telas pequenas */
+/*
+  -- CONTAINER DA TABELA --
+  Garante que a tabela seja responsiva em telas menores, permitindo
+  a rolagem horizontal se o conteúdo for muito largo.
+*/
 .table-container {
   width: 100%;
   overflow-x: auto;
+  border: 1px solid #e2e8f0; /* Borda ao redor da tabela */
+  border-radius: 0.5rem; /* Cantos arredondados */
+  background-color: #ffffff; /* Fundo branco */
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 }
 
 table {
   width: 100%;
-  border-collapse: collapse; /* Remove o espaço entre as bordas das células */
+  border-collapse: collapse;
   text-align: left;
   font-size: 0.9rem;
 }
 
-/* Estilo para as células do cabeçalho e do corpo da tabela */
+/*
+  -- CÉLULAS DO CABEÇALHO E CORPO --
+  Define um espaçamento generoso (padding) para as células, tornando
+  os dados mais fáceis de ler. A linha inferior separa cada registro.
+*/
 th, td {
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid #e2e8f0; /* Linha divisória cinza claro */
+  white-space: nowrap; /* Impede que o texto quebre em várias linhas */
 }
 
-/* Estilo específico para o cabeçalho (thead) */
+/* Remove a borda da última linha para um acabamento limpo */
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/*
+  -- CABEÇALHO DA TABELA (THEAD) --
+  Estilo distinto para o cabeçalho, com texto em maiúsculas e uma cor
+  sutil para diferenciá-lo dos dados do corpo da tabela.
+*/
 thead th {
   font-weight: 600;
-  color: var(--color-text-secondary);
-  font-size: 0.75rem; /* Letra um pouco menor */
+  color: #64748b; /* Cinza médio */
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em; /* Espaçamento entre as letras */
+  letter-spacing: 0.05em;
+  background-color: #f8fafc; /* Fundo cinza bem claro para o cabeçalho */
 }
 
-/* Estilo para as linhas do corpo da tabela (tbody) */
+/*
+  -- CORPO DA TABELA (TBODY) --
+  Adiciona um efeito de hover suave para dar feedback visual ao usuário
+  quando ele passa o mouse sobre uma linha.
+*/
 tbody tr {
   transition: background-color 0.2s;
 }
 
 tbody tr:hover {
-  background-color: var(--color-background); /* Efeito sutil ao passar o mouse */
+  background-color: #f8fafc; /* Efeito de hover cinza bem claro */
 }
 
-/* Dando destaque para a primeira coluna (Nome da Empresa) */
+/* Destaque para a primeira coluna (Nome da Empresa) */
 tbody td:first-child {
-  font-weight: 500;
-  color: var(--color-text-primary);
+  font-weight: 600;
+  color: #1e293b; /* Texto mais escuro para dar ênfase */
 }

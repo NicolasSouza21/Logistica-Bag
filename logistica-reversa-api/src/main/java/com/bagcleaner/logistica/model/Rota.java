@@ -1,6 +1,7 @@
-// ✨ CÓDIGO NOVO AQUI
+// ✨ CÓDIGO ATUALIZADO AQUI
 package com.bagcleaner.logistica.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference; // ✨ ALTERAÇÃO AQUI
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -21,7 +22,7 @@ public class Rota {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nomeRota; // Ex: "Rota Leste - 31/10/2025"
+    private String nomeRota;
     private String distanciaTotal;
     private String duracaoEstimada;
 
@@ -30,7 +31,8 @@ public class Rota {
     
     private LocalDateTime dataCriacao = LocalDateTime.now();
 
-    // Uma Rota tem muitas Ordens de Serviço
     @OneToMany(mappedBy = "rota", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    /* ✨ ALTERAÇÃO AQUI: Adiciona a anotação para gerenciar a referência circular */
+    @JsonManagedReference
     private List<OrdemServico> ordensServico = new ArrayList<>();
 }

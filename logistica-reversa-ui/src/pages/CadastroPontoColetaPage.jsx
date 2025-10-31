@@ -1,8 +1,8 @@
-// ✨ CÓDIGO NOVO E COMPLETO AQUI
 import React, { useState, useEffect, useCallback } from 'react';
 import PontoColetaService from '../services/PontoColetaService';
-// import FormPontoColeta from '../components/FormPontoColeta'; // Importaremos este formulário no futuro
-import './PontosColetaPage.css'; // Criaremos este CSS no próximo passo
+/* ✨ ALTERAÇÃO AQUI: Importa o formulário que já criamos */
+import FormPontoColeta from '../components/FormPontoColeta';
+import './PontosColetaPage.css';
 
 function PontosColetaPage() {
   const [pontosColeta, setPontosColeta] = useState([]);
@@ -36,13 +36,12 @@ function PontosColetaPage() {
 
   return (
     <div className="page-container">
-      {/* O modal de formulário ficará aqui no futuro
+      {/* ✨ ALTERAÇÃO AQUI: O modal de formulário agora está ativo */}
       <FormPontoColeta 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={handleSaveSuccess}
       /> 
-      */}
 
       <header className="page-header">
         <h1>Pontos de Coleta</h1>

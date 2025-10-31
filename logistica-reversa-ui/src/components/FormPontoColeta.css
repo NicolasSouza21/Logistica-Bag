@@ -1,37 +1,50 @@
-/* ✨ CÓDIGO NOVO E COMPLETO AQUI */
+/* ✨ ARQUIVO ATUALIZADO: src/components/FormPontoColeta.css */
 
-/* A sobreposição escura que cobre a tela inteira */
+/*
+  -- SOBREPOSIÇÃO DO MODAL (OVERLAY) --
+  Cria um fundo escuro e semitransparente que cobre a página inteira,
+  focando a atenção do usuário no formulário. O flexbox centraliza o modal.
+*/
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(15, 23, 42, 0.6); /* Azul-ardósia escuro com transparência */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Garante que o modal fique acima de todo o resto */
+  z-index: 1000;
+  backdrop-filter: blur(4px); /* Desfoca o fundo para mais foco */
 }
 
-/* O container branco do conteúdo do modal */
+/*
+  -- CONTAINER DO MODAL --
+  O card branco que contém o formulário. Possui cantos arredondados,
+  preenchimento interno e uma sombra sutil para parecer que está flutuando.
+*/
 .modal-content {
-  background: var(--color-card-background);
-  padding: 2rem;
-  border-radius: var(--border-radius);
+  background: #ffffff; /* Fundo branco */
+  padding: 2rem 2.5rem;
+  border-radius: 0.5rem; /* 8px */
   width: 100%;
   max-width: 500px;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 .modal-content h2 {
   margin-top: 0;
   margin-bottom: 2rem;
   font-size: 1.5rem;
-  color: var(--color-text-primary);
+  color: #1e293b; /* Cinza escuro */
+  text-align: center;
 }
 
-/* Estilo para cada grupo de label + input */
+/*
+  -- GRUPOS DE FORMULÁRIO (LABEL + INPUT) --
+  Define o espaçamento entre cada campo do formulário.
+*/
 .form-group {
   margin-bottom: 1.5rem;
 }
@@ -40,44 +53,79 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: var(--color-text-secondary);
+  color: #475569; /* Cinza um pouco mais escuro para labels */
 }
 
+/*
+  -- ESTILO DOS CAMPOS DE INPUT E SELECT --
+  Estilo unificado para todos os campos de entrada, com bordas claras,
+  preenchimento e um efeito de foco nítido.
+*/
 .form-group input,
 .form-group select {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius);
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1; /* Borda cinza */
+  border-radius: 0.5rem; /* 8px */
   font-size: 1rem;
-  background-color: var(--color-background);
-  color: var(--color-text-primary);
+  color: #1e293b;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px var(--color-primary-light);
+  border-color: #3b82f6; /* Borda azul ao focar */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); /* Brilho sutil azul */
 }
 
-/* Container para os botões de ação (Cancelar, Salvar) */
+/*
+  -- BOTÕES DE AÇÃO --
+  Alinha os botões à direita e adiciona espaço entre eles.
+  Utiliza as mesmas classes .btn-primary e .btn-secondary da página anterior
+  para manter a consistência.
+*/
 .modal-actions {
   display: flex;
-  justify-content: flex-end; /* Alinha os botões à direita */
+  justify-content: flex-end;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 
-/* Usamos as classes .btn-secondary e .btn-primary que já existem no CSS global */
-.modal-actions button {
-  padding: 0.6rem 1.2rem;
-  font-size: 0.9rem;
-  font-weight: 600;
+/* Reutilizando as classes de botão já definidas */
+.modal-actions .btn-primary {
+  background-color: #3b82f6; /* Azul */
+  color: white;
+}
+.modal-actions .btn-primary:hover {
+  background-color: #60a5fa; /* Azul claro */
 }
 
+.modal-actions .btn-secondary {
+  background-color: #ffffff;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+.modal-actions .btn-secondary:hover {
+  background-color: #f8fafc; /* Fundo cinza bem claro */
+  border-color: #d1d5db;
+}
+
+.modal-actions button:disabled {
+  background-color: #e2e8f0;
+  cursor: not-allowed;
+}
+
+/*
+  -- MENSAGEM DE ERRO --
+  Estilo claro e visível para mensagens de erro no formulário.
+*/
 .error-message {
-  color: #ef4444; /* Vermelho para erros */
-  margin-top: 1rem;
+  color: #b91c1c; /* Vermelho escuro */
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
   text-align: center;
+  margin-top: 1.5rem;
 }

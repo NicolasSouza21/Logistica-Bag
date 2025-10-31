@@ -1,8 +1,14 @@
-/* ✨ CÓDIGO NOVO AQUI */
+/* ✨ ARQUIVO ATUALIZADO: src/components/OrdemCard.css */
+
+/*
+  -- CARD BASE --
+  O card possui transições suaves para a transformação e sombra,
+  criando uma sensação tátil e reativa.
+*/
 .ordem-card {
-  display: flex; /* Alinha os itens (avatar, texto, etc.) lado a lado */
-  align-items: center; /* Centraliza os itens verticalmente */
-  gap: 1rem; /* Espaço entre os itens */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   background-color: var(--color-card-background);
   padding: 1rem 1.5rem;
   border-radius: var(--border-radius);
@@ -10,44 +16,63 @@
   margin-bottom: 1rem;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transition: box-shadow 0.2s, border-color 0.2s; /* Animação sutil */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
-/* Estilo para quando o card for passado o mouse por cima */
+/* Efeito de elevação sutil no hover */
 .ordem-card:hover {
+  transform: translateY(-4px);
   box-shadow: var(--shadow-md);
 }
 
-/* Estilo especial para quando o card está selecionado */
+/*
+  -- ESTADO SELECIONADO --
+  O estado selecionado é destacado com uma borda laranja e uma sombra
+  brilhante que pulsa suavemente para chamar a atenção.
+*/
 .ordem-card.selected {
   border-color: var(--color-primary);
-  background-color: var(--color-primary-light);
+  background-color: var(--color-card-background-light);
+  box-shadow: var(--shadow-md);
+  animation: selected-glow 1.5s infinite alternate;
+}
+
+@keyframes selected-glow {
+  from {
+    box-shadow: 0 0 5px 0px rgba(249, 115, 22, 0.5);
+  }
+  to {
+    box-shadow: 0 0 15px 3px rgba(249, 115, 22, 0.5);
+  }
 }
 
 .card-selection input {
   width: 18px;
   height: 18px;
   cursor: pointer;
+  accent-color: var(--color-primary); /* Estiliza o checkbox */
 }
 
-/* Estilo para o círculo com a letra inicial */
+/*
+  -- AVATAR --
+  O avatar com a inicial foi estilizado com as novas cores primárias.
+*/
 .card-avatar {
   width: 40px;
   height: 40px;
-  border-radius: 50%; /* Deixa o elemento perfeitamente redondo */
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   font-size: 1.2rem;
-  flex-shrink: 0; /* Impede que o avatar encolha */
+  flex-shrink: 0;
 }
 
-/* Organiza a área principal de texto */
 .card-details {
-  flex-grow: 1; /* Faz esta área ocupar todo o espaço restante */
+  flex-grow: 1;
 }
 
 .ponto-coleta-nome {
@@ -61,7 +86,6 @@
   margin-top: 0.25rem;
 }
 
-/* Alinha o status e a quantidade à direita */
 .card-info {
   display: flex;
   flex-direction: column;
@@ -70,15 +94,18 @@
   text-align: right;
 }
 
-/* Estilo para a "pílula" de status */
+/*
+  -- BADGE DE STATUS --
+  O badge de status agora usa a cor de destaque dourada.
+*/
 .status-badge {
   padding: 0.25rem 0.75rem;
-  border-radius: 9999px; /* Um valor alto para garantir bordas arredondadas */
+  border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  background-color: var(--status-pendente-bg);
-  color: var(--status-pendente-text);
+  background-color: rgba(245, 158, 11, 0.2);
+  color: var(--color-accent-gold);
 }
 
 .data-info {

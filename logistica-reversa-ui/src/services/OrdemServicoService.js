@@ -1,17 +1,9 @@
-// ✨ CÓDIGO NOVO AQUI
-// Arquivo: src/services/OrdemServicoService.js
-
 import api from './api';
 
-/**
- * Busca todas as ordens de serviço que correspondem a um status específico.
- * @param {string} status - O status a ser filtrado (ex: 'PENDENTE').
- * @returns {Promise<Array>} Uma lista de ordens de serviço.
- */
 const getOrdensPorStatus = async (status) => {
   try {
     const response = await api.get('/api/ordens-servico', {
-      params: { status } // O Axios transforma isso em ?status=PENDENTE na URL
+      params: { status }
     });
     return response.data;
   } catch (error) {
@@ -20,12 +12,6 @@ const getOrdensPorStatus = async (status) => {
   }
 };
 
-/**
- * Cria uma nova ordem de serviço.
- * @param {number} pontoColetaId - O ID do ponto de coleta.
- * @param {number} quantidadeEstimada - A quantidade de bags estimada.
- * @returns {Promise<Object>} A nova ordem de serviço criada.
- */
 const criarOrdem = async (pontoColetaId, quantidadeEstimada) => {
   try {
     const response = await api.post('/api/ordens-servico', {
@@ -39,9 +25,27 @@ const criarOrdem = async (pontoColetaId, quantidadeEstimada) => {
   }
 };
 
+/* ✨ ALTERAÇÃO AQUI: Adiciona a função que estava faltando */
+/**
+ * Busca os detalhes completos de uma lista de ordens de serviço a partir de seus IDs.
+ * @param {number[]} ids - Um array com os IDs das ordens.
+ * @returns {Promise<Array>} Uma lista com os detalhes das ordens de serviço.
+ */
+const getOrdensByIds = async (ids) => {
+  try {
+    // Faz a chamada POST para o endpoint /by-ids que criamos no backend
+    const response = await api.post('/api/ordens-servico/by-ids', ids);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar ordens por IDs:", error);
+    throw error;
+  }
+};
+
 const OrdemServicoService = {
   getOrdensPorStatus,
   criarOrdem,
+  getOrdensByIds, // ✨ ALTERAÇÃO AQUI: Exporta a nova função
 };
 
 export default OrdemServicoService;

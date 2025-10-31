@@ -10,10 +10,10 @@ function Layout({ children }) {
           <h3>Logística Reversa</h3>
         </div>
         <nav className="sidebar-nav">
-          {/* ✨ ALTERATION HERE: Added 'end' prop for precise active styling */}
+          {/* O 'end' garante que o Dashboard só fique ativo na URL exata */}
           <NavLink to="/planejamento" end>Dashboard</NavLink>
 
-          {/* ✨ ALTERATION HERE: Replaced placeholder with the correct link */}
+          {/* ✨ ALTERAÇÃO AQUI (JÁ FEITA): O link para a nova página está correto */}
           <NavLink to="/pontos-coleta">Pontos de Coleta</NavLink>
           
           <NavLink to="/relatorios">Relatórios</NavLink>

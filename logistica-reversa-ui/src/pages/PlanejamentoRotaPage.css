@@ -1,80 +1,105 @@
-/* ✨ CÓDIGO NOVO E COMPLETO AQUI */
+/* ✨ ARQUIVO FINAL CORRIGIDO: src/pages/PlanejamentoRotaPage.css */
+
 .page-container {
-  /* Garante que o container principal ocupe o espaço disponível */
   width: 100%;
 }
 
+/*
+  -- CABEÇALHO DA PÁGINA COM DIVISÓRIA --
+  Cria uma linha de separação clara abaixo do título principal.
+*/
 .page-header {
   display: flex;
-  justify-content: space-between; /* Coloca o título à esquerda e o botão à direita */
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e2e8f0; /* Cinza claro para a borda */
 }
 
 .page-header h1 {
   font-size: 1.875rem; /* 30px */
   font-weight: 700;
-  color: var(--color-text-primary);
+  color: #1e293b; /* Cinza escuro */
 }
 
-/* Estilo base para os botões */
+/*
+  -- BOTÕES COM CORES DIRETAS E INTUITIVAS --
+  As cores agora são aplicadas diretamente, sem variáveis, para garantir a mudança.
+*/
 .btn {
   padding: 0.6rem 1.2rem;
-  border-radius: var(--border-radius);
+  border-radius: 0.5rem; /* 8px */
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 600;
   border: 1px solid transparent;
-  transition: background-color 0.2s, opacity 0.2s;
+  transition: all 0.2s ease-in-out;
 }
 
+/* Botão de Ação Primária (ex: + Nova Coleta) */
 .btn-primary {
-  background-color: var(--color-primary);
+  background-color: #3b82f6; /* Azul */
   color: white;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
+  background-color: #60a5fa; /* Azul mais claro */
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transform: translateY(-2px);
 }
 
+/* Botão de Ação Secundária (ex: Criar Rota) */
 .btn-secondary {
-  background-color: var(--color-card-background);
-  color: var(--color-text-secondary);
-  border-color: var(--color-border);
+  background-color: #ffffff; /* Branco */
+  color: #64748b; /* Cinza médio */
+  border-color: #e2e8f0; /* Borda cinza claro */
 }
 
 .btn-secondary:hover {
-  background-color: var(--color-background);
+  border-color: #3b82f6; /* Borda azul */
+  color: #3b82f6; /* Texto azul */
 }
 
 .btn:disabled {
-  background-color: #e2e8f0;
-  color: #94a3b8;
+  background-color: #e2e8f0; /* Cinza claro */
+  color: #94a3b8; /* Cinza médio */
   cursor: not-allowed;
   border-color: transparent;
+  box-shadow: none;
+  transform: none;
 }
 
-/* Grid para os cards de indicadores (KPIs) */
+/*
+  -- CARDS DE INDICADORES (KPIs) COM BORDAS E SOMBRAS --
+  Cada card tem sua própria borda e sombra, garantindo a separação visual.
+*/
 .kpi-grid {
   display: grid;
-  /* Cria colunas responsivas: elas terão no mínimo 250px e se ajustarão ao espaço */
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .kpi-card {
-  background-color: var(--color-card-background);
+  background-color: #ffffff; /* Fundo branco */
   padding: 1.5rem;
-  border-radius: var(--border-radius);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
+  border-radius: 0.5rem; /* 8px */
+  border: 1px solid #e2e8f0; /* Borda que define o container */
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   display: flex;
   flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 .kpi-title {
-  color: var(--color-text-secondary);
+  color: #64748b; /* Cinza médio */
   font-weight: 500;
 }
 
@@ -82,14 +107,19 @@
   font-size: 2.25rem; /* 36px */
   font-weight: 700;
   margin-top: 0.5rem;
+  color: #1e293b; /* Cinza escuro */
 }
 
-/* O card principal que envolve a lista */
+/*
+  -- CARD DE CONTEÚDO PRINCIPAL COM DIVISÃO INTERNA --
+  Container principal com sua própria borda e uma linha interna que
+  separa o título da lista de chamados.
+*/
 .content-card {
-  background-color: var(--color-card-background);
-  border-radius: var(--border-radius);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
+  background-color: #ffffff; /* Fundo branco */
+  border-radius: 0.5rem; /* 8px */
+  border: 1px solid #e2e8f0; /* Borda principal do container */
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   padding: 1.5rem;
 }
 
@@ -99,43 +129,25 @@
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid #e2e8f0; /* Linha de separação interna */
 }
 
 .card-header h2 {
   font-size: 1.25rem;
   font-weight: 600;
+  color: #1e293b;
 }
 
-.rota-calculator {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.resultado-rota {
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-}
-
-.resultado-rota strong {
-  color: var(--color-text-primary);
-}
-
-/* A lista de cards, com barra de rolagem se necessário */
-.ordem-list {
-  max-height: 50vh; /* Limita a altura a 50% da altura da tela */
-  overflow-y: auto; /* Adiciona barra de rolagem vertical se o conteúdo transbordar */
-  padding-right: 0.5rem; /* Espaço para a barra de rolagem não colar nos cards */
-}
-
-/* Mensagens de feedback */
-.error-message, .loading-message, .empty-state {
+/*
+  -- ESTADO VAZIO COM DESTAQUE --
+  O aviso de "Nenhuma coleta" agora tem uma borda tracejada para
+  indicar uma área de conteúdo vazia de forma mais clara.
+*/
+.empty-state {
   text-align: center;
-  padding: 2rem;
-  color: var(--color-text-secondary);
-}
-
-.error-message {
-  color: #ef4444; /* Vermelho para erros */
+  padding: 3rem;
+  color: #64748b; /* Cinza médio */
+  border: 1px dashed #e2e8f0; /* Borda tracejada */
+  border-radius: 0.5rem; /* 8px */
+  margin-top: 1rem;
 }

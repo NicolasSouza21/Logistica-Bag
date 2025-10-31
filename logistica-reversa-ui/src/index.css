@@ -1,41 +1,36 @@
-/* ✨ CÓDIGO NOVO E COMPLETO AQUI */
+/* ✨ ARQUIVO ATUALIZADO: src/index.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* Definindo variáveis de CSS (Custom Properties).
-  Isso nos permite reutilizar cores e valores, facilitando a manutenção.
-  Se quisermos mudar a cor primária do sistema, mudamos apenas em um lugar.
-*/
 :root {
-  --color-primary: #2563eb; /* Azul principal */
-  --color-primary-light: #eff6ff; /* Azul bem claro para fundos selecionados */
-  --color-background: #f8fafc; /* Cor de fundo principal da página (cinza bem claro) */
-  --color-card-background: #ffffff; /* Branco puro para os cards */
-  --color-text-primary: #1e293b; /* Cor de texto principal (cinza escuro) */
-  --color-text-secondary: #64748b; /* Cor de texto secundário (cinza médio) */
-  --color-border: #e2e8f0; /* Cor para bordas sutis */
+  /* Cores (inalteradas) */
+  --color-primary: #3b82f6;
+  --color-primary-hover: #60a5fa;
+  --color-primary-light: #eff6ff;
+  --color-background: #f8fafc;
+  --color-card-background: #ffffff;
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-border: #e2e8f0;
+  --color-success: #22c55e;
+  --status-pendente-bg: #fef9c3;
+  --status-pendente-text: #854d0e;
 
-  /* Cores para os status */
-  --status-pendente-bg: #fef9c3; /* Amarelo claro */
-  --status-pendente-text: #854d0e; /* Marrom escuro */
-  
-  /* Padrões de estilo */
+  /*
+    -- ATUALIZAÇÃO NAS SOMBRAS --
+    Sombras suaves e com múltiplas camadas para um efeito de profundidade mais natural.
+  */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --border-radius: 0.5rem; /* 8px */
 }
 
-/* Reset básico para garantir que todos os navegadores
-  comecem com a mesma base (sem margens ou paddings inesperados).
-*/
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Estilo base para toda a aplicação.
-  Aplicamos a fonte que importamos e a cor de fundo padrão.
-*/
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--color-background);

@@ -3,8 +3,8 @@ package com.bagcleaner.logistica.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod; // ✨ ALTERAÇÃO AQUI
 import org.springframework.security.authentication.AuthenticationManager;
-/* ✨ ALTERAÇÃO AQUI */
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-/* ✨ ALTERAÇÃO AQUI */
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -27,12 +26,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
-/* ✨ ALTERAÇÃO AQUI */
-@RequiredArgsConstructor // Adiciona um construtor com os campos 'final'
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    /* ✨ ALTERAÇÃO AQUI */
-    // Injeta nosso filtro JWT e o UserDetailsService
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
 
@@ -42,11 +38,23 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(withDefaults())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            /* ✨ ALTERAÇÃO AQUI: Regras de autorização explícitas */
             .authorizeHttpRequests(authorize -> authorize
+                // Permite acesso público ao endpoint de login
                 .requestMatchers("/api/auth/**").permitAll()
+
+                // Permite que usuários com qualquer uma dessas roles acessem os endpoints de rotas
+                .requestMatchers("/api/rotas/**").hasAnyRole("ADMIN", "GERENTE", "LOGISTICA")
+
+                // Permite que usuários com qualquer uma dessas roles acessem os endpoints de ordens de serviço
+                .requestMatchers("/api/ordens-servico/**").hasAnyRole("ADMIN", "GERENTE", "LOGISTICA")
+                
+                // Permite que usuários com qualquer uma dessas roles acessem os endpoints de pontos de coleta
+                .requestMatchers("/api/pontos-coleta/**").hasAnyRole("ADMIN", "GERENTE", "LOGISTICA")
+
+                // Qualquer outra requisição precisa estar autenticada
                 .anyRequest().authenticated()
             )
-            /* ✨ ALTERAÇÃO AQUI: Adiciona o provedor de autenticação e o nosso filtro JWT */
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         
@@ -71,13 +79,10 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /* ✨ ALTERAÇÃO AQUI: Novo Bean para o Provedor de Autenticação */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        // Informa ao provedor qual serviço usar para buscar usuários
         authProvider.setUserDetailsService(userDetailsService);
-        // Informa ao provedor qual algoritmo usar para verificar senhas
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

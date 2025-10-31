@@ -1,8 +1,15 @@
-/* ✨ CÓDIGO NOVO AQUI */
+/* ✨ ARQUIVO ATUALIZADO: src/components/Layout.css */
+
 .layout-container {
   display: flex;
   min-height: 100vh;
 }
+
+/*
+  -- SIDEBAR --
+  A sidebar agora usa o fundo de card, criando uma separação visual clara
+  do conteúdo principal. A borda direita adiciona um detalhe sutil.
+*/
 .sidebar {
   width: 250px;
   background-color: var(--color-card-background);
@@ -11,18 +18,27 @@
   flex-direction: column;
   padding: 1.5rem 1rem;
 }
+
 .sidebar-header h3 {
   font-size: 1.5rem;
   color: var(--color-primary);
   text-align: center;
   margin-bottom: 2rem;
+  font-weight: 700;
 }
+
 .sidebar-nav {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   flex-grow: 1;
 }
+
+/*
+  -- LINKS DE NAVEGAÇÃO --
+  Os links têm uma transição suave de cor e um efeito visual claro
+  para o estado ativo, com uma barra lateral e texto destacado.
+*/
 .sidebar-nav a {
   text-decoration: none;
   color: var(--color-text-secondary);
@@ -30,25 +46,28 @@
   padding: 0.75rem 1rem;
   border-radius: var(--border-radius);
   transition: background-color 0.2s, color 0.2s;
+  position: relative;
+  border-left: 3px solid transparent; /* Base para o indicador ativo */
 }
+
 .sidebar-nav a:hover {
-  background-color: var(--color-background);
+  background-color: var(--color-card-background-light);
+  color: var(--color-text-primary);
 }
+
 .sidebar-nav a.active {
-  background-color: var(--color-primary);
-  color: white;
+  background-color: rgba(249, 115, 22, 0.1); /* Fundo laranja sutil */
+  color: var(--color-primary);
+  border-left: 3px solid var(--color-primary); /* Indicador visual ativo */
 }
-.logout-button {
-  width: 100%;
-  padding: 0.75rem;
-  background: none;
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-weight: 500;
-}
+
+/*
+  -- CONTEÚDO PRINCIPAL --
+  A área de conteúdo principal tem um padding generoso para garantir
+  bom espaçamento e legibilidade.
+*/
 .main-content {
   flex: 1;
-  padding: 2rem;
+  padding: 2rem 3rem;
   overflow-y: auto;
 }

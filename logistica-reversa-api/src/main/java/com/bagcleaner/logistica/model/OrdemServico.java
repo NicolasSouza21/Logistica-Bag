@@ -1,6 +1,7 @@
-// ✨ CÓDIGO CORRIGIDO/NOVO AQUI
+// ✨ CÓDIGO ATUALIZADO AQUI
 package com.bagcleaner.logistica.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference; // ✨ ALTERAÇÃO AQUI
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -10,9 +11,9 @@ import java.time.LocalDateTime;
 @Data
 public class OrdemServico {
 
-    // Enum para controlar os status da Ordem de Serviço
     public enum Status {
         PENDENTE,
+        ALOCADA_PARA_ROTA,
         EM_ROTA_COLETA,
         EM_MANUTENCAO,
         PRONTA_PARA_DEVOLUCAO,
@@ -23,15 +24,21 @@ public class OrdemServico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Muitas ordens para UM ponto de coleta
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ponto_coleta_id")
     private PontoColeta pontoColeta;
 
-    @Enumerated(EnumType.STRING) // ⚠️ Boa prática: Salva o NOME do status no banco, não o número
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     private int quantidadeEstimada;
     private int quantidadeRealColetada;
     private LocalDateTime dataCriacao = LocalDateTime.now();
     private LocalDateTime dataConclusao;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rota_id")
+    /* ✨ ALTERAÇÃO AQUI: Adiciona a anotação para quebrar a referência circular */
+    @JsonBackReference 
+    private Rota rota;
 }

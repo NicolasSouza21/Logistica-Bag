@@ -1,0 +1,87 @@
+/* ✨ CÓDIGO NOVO AQUI */
+.ordem-card {
+  display: flex; /* Alinha os itens (avatar, texto, etc.) lado a lado */
+  align-items: center; /* Centraliza os itens verticalmente */
+  gap: 1rem; /* Espaço entre os itens */
+  background-color: var(--color-card-background);
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-border);
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: box-shadow 0.2s, border-color 0.2s; /* Animação sutil */
+}
+
+/* Estilo para quando o card for passado o mouse por cima */
+.ordem-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Estilo especial para quando o card está selecionado */
+.ordem-card.selected {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
+.card-selection input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* Estilo para o círculo com a letra inicial */
+.card-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* Deixa o elemento perfeitamente redondo */
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  flex-shrink: 0; /* Impede que o avatar encolha */
+}
+
+/* Organiza a área principal de texto */
+.card-details {
+  flex-grow: 1; /* Faz esta área ocupar todo o espaço restante */
+}
+
+.ponto-coleta-nome {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.ordem-descricao {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin-top: 0.25rem;
+}
+
+/* Alinha o status e a quantidade à direita */
+.card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  text-align: right;
+}
+
+/* Estilo para a "pílula" de status */
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px; /* Um valor alto para garantir bordas arredondadas */
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: var(--status-pendente-bg);
+  color: var(--status-pendente-text);
+}
+
+.data-info {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}

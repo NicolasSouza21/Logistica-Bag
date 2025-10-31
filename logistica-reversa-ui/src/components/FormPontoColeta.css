@@ -1,0 +1,83 @@
+/* ✨ CÓDIGO NOVO E COMPLETO AQUI */
+
+/* A sobreposição escura que cobre a tela inteira */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Garante que o modal fique acima de todo o resto */
+}
+
+/* O container branco do conteúdo do modal */
+.modal-content {
+  background: var(--color-card-background);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  width: 100%;
+  max-width: 500px;
+  box-shadow: var(--shadow-md);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
+}
+
+/* Estilo para cada grupo de label + input */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+/* Container para os botões de ação (Cancelar, Salvar) */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end; /* Alinha os botões à direita */
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Usamos as classes .btn-secondary e .btn-primary que já existem no CSS global */
+.modal-actions button {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.error-message {
+  color: #ef4444; /* Vermelho para erros */
+  margin-top: 1rem;
+  text-align: center;
+}

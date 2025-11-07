@@ -1,54 +1,84 @@
-// ✨ CÓDIGO NOVO E COMPLETO AQUI
-import React, { useState } from 'react';
+// ✨ CÓDIGO ATUALIZADO AQUI
+import React, { useState, useEffect } from 'react';
 import PontoColetaService from '../services/PontoColetaService';
-import './FormPontoColeta.css'; // Usaremos um CSS similar ao outro modal
+import './FormPontoColeta.css'; 
 
-function FormPontoColeta({ isOpen, onClose, onSave }) {
-  // Estados para cada campo do formulário
+function FormPontoColeta({ isOpen, onClose, onSave, pontoParaEditar }) {
   const [nome, setNome] = useState('');
   const [endereco, setEndereco] = useState('');
   const [contato, setContato] = useState('');
-  const [tipoBag, setTipoBag] = useState('PADRAO'); // Valor inicial padrão
+  
+  /* ✨ 1. ALTERAÇÃO AQUI: Mudamos o estado para uma string */
+  const [tiposBagString, setTiposBagString] = useState(''); // Era 'tipoBag', agora é uma string
 
-  // Estados de controle do formulário
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isOpen && pontoParaEditar) {
+      setNome(pontoParaEditar.nome || '');
+      setEndereco(pontoParaEditar.enderecoCompleto || '');
+      setContato(pontoParaEditar.contatoResponsavel || '');
+      
+      /* ✨ 2. ALTERAÇÃO AQUI: Pegamos a LISTA do backend e transformamos em STRING */
+      // O backend envia ['Bag A', 'Bag B'], transformamos em "Bag A, Bag B"
+      setTiposBagString(pontoParaEditar.tiposBag ? pontoParaEditar.tiposBag.join(', ') : '');
+    } else {
+      handleClose(false); 
+    }
+  }, [isOpen, pontoParaEditar]); 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
     setError('');
 
-    // Monta o objeto com os dados para enviar à API
+    /* ✨ 3. ALTERAÇÃO AQUI: Convertemos a STRING de volta para uma LISTA */
+    // Pega "Bag A, Bag B, ", quebra pela vírgula, limpa espaços e remove itens vazios
+    const tiposBagArray = tiposBagString
+      .split(',')
+      .map(bag => bag.trim()) // Limpa espaços (ex: " Bag A " vira "Bag A")
+      .filter(bag => bag.length > 0); // Remove itens vazios (ex: "Bag A,, Bag B")
+
     const pontoColetaData = {
       nome,
       enderecoCompleto: endereco,
       contatoResponsavel: contato,
-      tipoBag,
+      tiposBag: tiposBagArray, // ✨ 4. ALTERAÇÃO AQUI: Enviamos a lista
     };
 
     try {
-      await PontoColetaService.criarPontoColeta(pontoColetaData);
-      onSave(); // Avisa o componente pai que o item foi salvo
-      handleClose(); // Fecha e limpa o modal
+      if (pontoParaEditar && pontoParaEditar.id) {
+        await PontoColetaService.atualizarPontoColeta(pontoParaEditar.id, pontoColetaData);
+      } else {
+        await PontoColetaService.criarPontoColeta(pontoColetaData);
+      }
+      
+      onSave(); 
+      handleClose(); 
     } catch (err) {
-      setError('Erro ao salvar o ponto de coleta. Verifique os dados.');
+      if (err.response && err.response.status === 403) {
+          setError('Você não tem permissão para esta ação.');
+      } else {
+          setError('Erro ao salvar o ponto de coleta. Verifique os dados.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleClose = () => {
-    // Limpa todos os campos ao fechar o modal
+  const handleClose = (deveFecharModal = true) => {
     setNome('');
     setEndereco('');
     setContato('');
-    setTipoBag('PADRAO');
+    /* ✨ 5. ALTERAÇÃO AQUI: Limpa o estado da string */
+    setTiposBagString('');
     setError('');
-    onClose(); // Chama a função onClose passada pelo pai
+    if (deveFecharModal) {
+      onClose();
+    }
   };
 
-  // Se o modal não estiver aberto, não renderiza nada
   if (!isOpen) {
     return null;
   }
@@ -56,7 +86,7 @@ function FormPontoColeta({ isOpen, onClose, onSave }) {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Novo Ponto de Coleta</h2>
+        <h2>{pontoParaEditar ? 'Editar Ponto de Coleta' : 'Novo Ponto de Coleta'}</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="nome-empresa">Nome da Empresa</label>
@@ -88,25 +118,25 @@ function FormPontoColeta({ isOpen, onClose, onSave }) {
               required
             />
           </div>
+
+          {/* ✨ 6. ALTERAÇÃO AQUI: Substituímos o <select> por um <input> */}
           <div className="form-group">
-            <label htmlFor="tipo-bag">Tipo de Bag Principal</label>
-            <select
+            <label htmlFor="tipo-bag">Tipos de Bag</label>
+            <input
+              type="text"
               id="tipo-bag"
-              value={tipoBag}
-              onChange={(e) => setTipoBag(e.target.value)}
-              required
-            >
-              <option value="PADRAO">Padrão</option>
-              <option value="GRANDE">Grande</option>
-              <option value="REFRIGERADO">Refrigerado</option>
-              <option value="ESPECIAL">Especial</option>
-            </select>
+              value={tiposBagString}
+              onChange={(e) => setTiposBagString(e.target.value)}
+              placeholder="Ex: Bag Vermelha, Bag Lona, Caixa"
+            />
+            {/* Adicionamos um texto de ajuda */}
+            <small>Separe os nomes dos bags por vírgula (,)</small>
           </div>
 
           {error && <p className="error-message">{error}</p>}
 
           <div className="modal-actions">
-            <button type="button" onClick={handleClose} className="btn-secondary">Cancelar</button>
+            <button type="button" onClick={() => handleClose(true)} className="btn-secondary">Cancelar</button>
             <button type="submit" className="btn-primary" disabled={loading}>
               {loading ? 'Salvando...' : 'Salvar'}
             </button>

@@ -1,3 +1,4 @@
+// ✨ CÓDIGO ATUALIZADO AQUI
 package com.bagcleaner.logistica.service;
 
 import com.bagcleaner.logistica.dto.CriarOrdemServicoRequestDTO;
@@ -8,6 +9,7 @@ import com.bagcleaner.logistica.repository.OrdemServicoRepository;
 import com.bagcleaner.logistica.repository.PontoColetaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional; // ✨ ALTERAÇÃO AQUI
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,22 +28,28 @@ public class OrdemServicoService {
                 .collect(Collectors.toList());
     }
 
-    /* ✨ ALTERAÇÃO AQUI: O método agora usa a query otimizada "findByIdInWithPontoColeta". */
     public List<OrdemServicoDTO> findByIds(List<Long> ids) {
-        // Altera a chamada para o novo método do repositório
         return ordemServicoRepository.findByIdInWithPontoColeta(ids)
                 .stream()
                 .map(OrdemServicoDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
+    /* ✨ ALTERAÇÃO AQUI: Lógica de criação atualizada */
+    @Transactional
     public OrdemServicoDTO criarOrdemServico(CriarOrdemServicoRequestDTO dto) {
         PontoColeta pontoColeta = pontoColetaRepository.findById(dto.getPontoColetaId())
                 .orElseThrow(() -> new RuntimeException("Ponto de Coleta não encontrado com id: " + dto.getPontoColetaId()));
 
         OrdemServico novaOrdem = new OrdemServico();
         novaOrdem.setPontoColeta(pontoColeta);
-        novaOrdem.setQuantidadeEstimada(dto.getQuantidadeEstimada());
+        
+        // Remove quaisquer entradas com quantidade 0 ou nula
+        dto.getQuantidadesEstimadas().values().removeIf(qtd -> qtd == null || qtd <= 0);
+        
+        // Salva o Map de quantidades
+        novaOrdem.setQuantidadesEstimadas(dto.getQuantidadesEstimadas());
+        
         novaOrdem.setStatus(OrdemServico.Status.PENDENTE);
 
         OrdemServico ordemSalva = ordemServicoRepository.save(novaOrdem);

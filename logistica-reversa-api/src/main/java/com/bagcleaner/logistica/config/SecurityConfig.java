@@ -1,21 +1,22 @@
+// ✨ CÓDIGO ATUALIZADO AQUI (REATIVANDO A SEGURANÇA)
 package com.bagcleaner.logistica.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod; // ✨ ALTERAÇÃO AQUI
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.authentication.AuthenticationProvider; // ✨ ALTERAÇÃO AQUI
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider; // ✨ ALTERAÇÃO AQUI
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration; // ✨ ALTERAÇÃO AQUI
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity; // ✨ ALTERAÇÃO AQUI
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetailsService; // ✨ ALTERAÇÃO AQUI
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter; // ✨ ALTERAÇÃO AQUI
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -27,8 +28,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity // ✨ ALTERAÇÃO AQUI: Ativa as anotações como @PreAuthorize
 public class SecurityConfig {
 
+    /* ✨ ALTERAÇÃO AQUI: Trazendo o filtro e o service de volta */
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
 
@@ -38,23 +41,14 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(withDefaults())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            /* ✨ ALTERAÇÃO AQUI: Regras de autorização explícitas */
+            
+            /* ✨ ALTERAÇÃO AQUI: Reativando as regras de segurança */
             .authorizeHttpRequests(authorize -> authorize
-                // Permite acesso público ao endpoint de login
-                .requestMatchers("/api/auth/**").permitAll()
-
-                // Permite que usuários com qualquer uma dessas roles acessem os endpoints de rotas
-                .requestMatchers("/api/rotas/**").hasAnyRole("ADMIN", "GERENTE", "LOGISTICA")
-
-                // Permite que usuários com qualquer uma dessas roles acessem os endpoints de ordens de serviço
-                .requestMatchers("/api/ordens-servico/**").hasAnyRole("ADMIN", "GERENTE", "LOGISTICA")
-                
-                // Permite que usuários com qualquer uma dessas roles acessem os endpoints de pontos de coleta
-                .requestMatchers("/api/pontos-coleta/**").hasAnyRole("ADMIN", "GERENTE", "LOGISTICA")
-
-                // Qualquer outra requisição precisa estar autenticada
-                .anyRequest().authenticated()
+                .requestMatchers("/api/auth/**").permitAll() // Libera o login
+                .anyRequest().authenticated() // Protege todo o resto
             )
+            
+            /* ✨ ALTERAÇÃO AQUI: Reconectando nossos provedores e filtros */
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         
@@ -79,6 +73,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /* ✨ ALTERAÇÃO AQUI: Trazendo o AuthenticationProvider de volta */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -87,6 +82,7 @@ public class SecurityConfig {
         return authProvider;
     }
     
+    /* ✨ ALTERAÇÃO AQUI: Trazendo o AuthenticationManager de volta (CORRIGE O ERRO) */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

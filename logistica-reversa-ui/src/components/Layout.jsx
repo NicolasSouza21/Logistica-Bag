@@ -1,8 +1,20 @@
+// ✨ CÓDIGO ATUALIZADO AQUI
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+/* ✨ 1. Importa o NavLink, o hook useNavigate e o AuthService */
+import { NavLink, useNavigate } from 'react-router-dom';
+import AuthService from '../services/AuthService';
 import './Layout.css';
 
 function Layout({ children }) {
+  /* ✨ 2. Inicializa o hook de navegação */
+  const navigate = useNavigate();
+
+  /* ✨ 3. Cria a função de logout */
+  const handleLogout = () => {
+    AuthService.logout(); // Limpa o token do localStorage
+    navigate('/login'); // Redireciona para a página de login
+  };
+
   return (
     <div className="layout-container">
       <aside className="sidebar">
@@ -10,16 +22,14 @@ function Layout({ children }) {
           <h3>Logística Reversa</h3>
         </div>
         <nav className="sidebar-nav">
-          {/* O 'end' garante que o Dashboard só fique ativo na URL exata */}
           <NavLink to="/planejamento" end>Dashboard</NavLink>
-
-          {/* ✨ ALTERAÇÃO AQUI (JÁ FEITA): O link para a nova página está correto */}
           <NavLink to="/pontos-coleta">Pontos de Coleta</NavLink>
-          
+          <NavLink to="/rotas">Rotas</NavLink>
           <NavLink to="/relatorios">Relatórios</NavLink>
         </nav>
         <div className="sidebar-footer">
-          <button className="logout-button">Sair</button>
+          {/* ✨ 4. Adiciona o onClick ao botão */}
+          <button onClick={handleLogout} className="logout-button">Sair</button>
         </div>
       </aside>
       <main className="main-content">

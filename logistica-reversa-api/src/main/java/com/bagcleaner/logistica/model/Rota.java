@@ -1,7 +1,7 @@
 // ✨ CÓDIGO ATUALIZADO AQUI
 package com.bagcleaner.logistica.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference; // ✨ ALTERAÇÃO AQUI
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -14,6 +14,7 @@ import java.util.List;
 public class Rota {
     public enum StatusRota {
         PLANEJADA,
+        APROVADA, // ✨ ALTERAÇÃO AQUI: Novo status para o fluxo de aprovação
         EM_ANDAMENTO,
         CONCLUIDA
     }
@@ -26,13 +27,15 @@ public class Rota {
     private String distanciaTotal;
     private String duracaoEstimada;
 
+    /* ✨ ALTERAÇÃO AQUI: Campo para armazenar o valor do frete */
+    private Double valorFrete;
+
     @Enumerated(EnumType.STRING)
     private StatusRota status;
     
     private LocalDateTime dataCriacao = LocalDateTime.now();
 
     @OneToMany(mappedBy = "rota", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    /* ✨ ALTERAÇÃO AQUI: Adiciona a anotação para gerenciar a referência circular */
     @JsonManagedReference
     private List<OrdemServico> ordensServico = new ArrayList<>();
 }

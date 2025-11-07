@@ -129,3 +129,9 @@
   text-align: center;
   margin-top: 1.5rem;
 }
+.form-group small {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}

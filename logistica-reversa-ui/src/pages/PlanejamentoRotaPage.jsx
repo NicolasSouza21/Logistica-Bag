@@ -1,5 +1,4 @@
-// ✨ ARQUIVO ATUALIZADO com os containers de KPI
-
+// ✨ ARQUIVO ATUALIZADO AQUI
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import OrdemServicoService from '../services/OrdemServicoService';
@@ -22,6 +21,7 @@ function PlanejamentoRotaPage() {
     try {
       setLoading(true);
       setError('');
+      // O DTO que vem daqui agora inclui latitude e longitude
       const data = await OrdemServicoService.getOrdensPorStatus('PENDENTE');
       setOrdens(data);
     } catch (err) {
@@ -51,23 +51,41 @@ function PlanejamentoRotaPage() {
     setError('');
 
     const idsSelecionados = Array.from(ordensSelecionadas);
-    const enderecos = ordens
-      .filter(ordem => ordensSelecionadas.has(ordem.id))
-      .map(ordem => ordem.enderecoPontoColeta);
+
+    /* ✨ ALTERAÇÃO AQUI: Mapeia as coordenadas exatas em vez dos endereços */
+    const ordensParaRota = ordens
+      .filter(ordem => ordensSelecionadas.has(ordem.id));
+
+    // Validação: Garante que todos os pontos selecionados têm coordenadas
+    // (Protege contra dados antigos cadastrados antes da correção do geocoding)
+    const ordensInvalidas = ordensParaRota.filter(ordem => !ordem.latitude || !ordem.longitude);
+
+    if (ordensInvalidas.length > 0) {
+      setError(`Erro: A ordem "${ordensInvalidas[0].nomePontoColeta}" não possui coordenadas. Cadastre o ponto de coleta novamente.`);
+      setCalculandoRota(false);
+      return;
+    }
+
+    // Mapeia para a lista de strings "lat,lng" que o backend espera
+    const coordenadas = ordensParaRota
+      .map(ordem => `${ordem.latitude},${ordem.longitude}`);
       
     try {
-      const resultado = await RotaService.calcularRota(enderecos);
+      /* ✨ ALTERAÇÃO AQUI: Envia o objeto { coordenadas: [...] } */
+      const resultado = await RotaService.calcularRota({ coordenadas });
       
+      // Navega para a página de criação com todos os dados corretos
       navigate('/rotas/criar', { 
         state: { 
           ordemIds: idsSelecionados,
           distanciaTotal: resultado.distanciaTotal,
-          duracaoEstimada: resultado.duracaoTotal,
+          duracaoEstimada: resultado.duracaoEstimada,
+          polyline: resultado.polyline // A linha do mapa
         } 
       });
 
     } catch (err) {
-      setError('Erro ao calcular a rota. Verifique os endereços e tente novamente.');
+      setError('Erro ao calcular a rota. Tente novamente.');
     } finally {
       setCalculandoRota(false);
     }
@@ -82,11 +100,7 @@ function PlanejamentoRotaPage() {
         <button onClick={() => setIsModalOpen(true)} className="btn btn-primary">+ Nova Coleta</button>
       </header>
 
-      {/*
-        -- ✨ CONTAINERS ADICIONADOS AQUI --
-        Este é o grid que cria a divisão para os cartões de indicadores,
-        cada um com sua própria sombra e estilo.
-      */}
+      {/* ... (KPIs e resto da página sem alterações) ... */}
       <div className="kpi-grid">
         <div className="kpi-card">
           <span className="kpi-title">Chamados Abertos</span>

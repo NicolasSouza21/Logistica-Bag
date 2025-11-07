@@ -1,3 +1,4 @@
+// ✨ CÓDIGO ATUALIZADO AQUI
 package com.bagcleaner.logistica.service;
 
 import io.jsonwebtoken.Claims;
@@ -22,9 +23,9 @@ public class JwtService {
     // que é o tamanho adequado e o formato esperado para o algoritmo HS256.
     private static final String SECRET_KEY = "NDY4Mjc3MjE0ZjVmNzE0MzZjNGE1YTQ0NjYyZDYxMzE2NTJlNzE2YjU4NmEzYjE5ZTZhM2E5N2U5ZDY0NjM0ZQ==";
 
-    // Define o tempo de expiração do token (em milissegundos)
-    // Aqui: 24 horas
-    private static final long JWT_EXPIRATION = 1000 * 60 * 60 * 24;
+    /* ✨✨✨ ALTERAÇÃO PRINCIPAL AQUI ✨✨✨ */
+    // Define o tempo de expiração para 10 ANOS. Nunca mais vai expirar.
+    private static final long JWT_EXPIRATION = 1000L * 60 * 60 * 24 * 365 * 10; // 10 Anos
 
     /**
      * Extrai o nome de usuário (subject) do token JWT.

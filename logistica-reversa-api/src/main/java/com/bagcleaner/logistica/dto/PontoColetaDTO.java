@@ -1,29 +1,35 @@
+// ✨ CÓDIGO ATUALIZADO AQUI
 package com.bagcleaner.logistica.dto;
 
 import com.bagcleaner.logistica.model.PontoColeta;
 import lombok.Data;
+import java.util.List; // ✨ ALTERAÇÃO AQUI
 
 @Data
 public class PontoColetaDTO {
     private Long id;
     private String nome;
-    /* ✨ ALTERAÇÃO AQUI: Novos campos adicionados ao DTO */
     private String enderecoCompleto;
     private String contatoResponsavel;
-    private String tipoBag;
+    
+    /* ✨ ALTERAÇÃO AQUI: Trocamos o campo para refletir a nova entidade */
+    // private String tipoBag;
+    private List<String> tiposBag; // Agora é uma lista de strings
 
     // O método de fábrica agora preenche todos os campos
     public static PontoColetaDTO fromEntity(PontoColeta pontoColeta) {
         PontoColetaDTO dto = new PontoColetaDTO();
         dto.setId(pontoColeta.getId());
         dto.setNome(pontoColeta.getNome());
-        /* ✨ ALTERAÇÃO AQUI: Preenchendo os novos campos */
         dto.setEnderecoCompleto(pontoColeta.getEnderecoCompleto());
         dto.setContatoResponsavel(pontoColeta.getContatoResponsavel());
-        // Converte o Enum para String para enviar ao frontend
-        if (pontoColeta.getTipoBag() != null) {
-            dto.setTipoBag(pontoColeta.getTipoBag().toString());
-        }
+
+        /* ✨ ALTERAÇÃO AQUI: Copiamos a lista da entidade para o DTO */
+        // if (pontoColeta.getTipoBag() != null) {
+        //     dto.setTipoBag(pontoColeta.getTipoBag().toString());
+        // }
+        dto.setTiposBag(pontoColeta.getTiposBag()); // Copia a lista de nomes
+
         return dto;
     }
 }

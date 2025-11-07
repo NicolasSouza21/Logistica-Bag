@@ -1,4 +1,4 @@
-// ✨ CÓDIGO CORRIGIDO E COMPLETO AQUI
+// ✨ CÓDIGO ATUALIZADO AQUI
 import api from './api';
 
 /**
@@ -16,11 +16,10 @@ const calcularRota = async (enderecos) => {
   }
 };
 
-/* ✨ ADIÇÃO AQUI: A função que estava faltando */
 /**
  * Envia os dados da rota planejada para serem salvos no backend.
- * @param {Object} rotaData - Um objeto contendo { ordemIds, distanciaTotal, duracaoEstimada }.
- * @returns {Promise<any>} A resposta do backend (neste caso, o ID da nova rota).
+ * @param {Object} rotaData - Um objeto contendo { ordemIds, distanciaTotal, duracaoEstimada, valorFrete }.
+ * @returns {Promise<any>} A resposta do backend (a rota criada).
  */
 const criarRotaPlanejada = async (rotaData) => {
   try {
@@ -33,10 +32,43 @@ const criarRotaPlanejada = async (rotaData) => {
   }
 };
 
+/* ✨ ALTERAÇÃO AQUI: Novas funções para listar e aprovar rotas */
+
+/**
+ * Busca todas as rotas cadastradas.
+ * @returns {Promise<Array>} Uma lista de rotas (DTOs).
+ */
+const getRotas = async () => {
+  try {
+    const response = await api.get('/api/rotas');
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar rotas:', error);
+    throw error;
+  }
+};
+
+/**
+ * Aprova uma rota específica (muda o status para APROVADA).
+ * @param {number} rotaId - O ID da rota a ser aprovada.
+ * @returns {Promise<Object>} A rota atualizada (DTO).
+ */
+const aprovarRota = async (rotaId) => {
+  try {
+    const response = await api.put(`/api/rotas/${rotaId}/aprovar`);
+    return response.data;
+  } catch (error) {
+    console.error(`Erro ao aprovar a rota ${rotaId}:`, error);
+    throw error;
+  }
+};
+
 
 const RotaService = {
   calcularRota,
-  criarRotaPlanejada, // ✨ ADIÇÃO AQUI: Exportando a nova função
+  criarRotaPlanejada,
+  getRotas, // ✨ ADIÇÃO AQUI
+  aprovarRota, // ✨ ADIÇÃO AQUI
 };
 
 export default RotaService;

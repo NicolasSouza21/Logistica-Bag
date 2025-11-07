@@ -1,4 +1,4 @@
-// ✨ CÓDIGO NOVO AQUI
+// ✨ CÓDIGO ATUALIZADO AQUI
 package com.bagcleaner.logistica.dto;
 
 import lombok.Data;
@@ -6,6 +6,8 @@ import java.util.List;
 
 @Data
 public class RotaRequestDTO {
-    // Esperamos receber uma lista de endereços do frontend
-    private List<String> enderecos;
+    /* * ✨ ALTERAÇÃO AQUI: Mudamos de 'enderecos' para 'coordenadas'.
+     * Esperamos uma lista de Strings, onde cada String é "latitude,longitude"
+     */
+    private List<String> coordenadas;
 }

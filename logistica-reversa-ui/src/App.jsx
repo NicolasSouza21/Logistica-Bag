@@ -1,10 +1,12 @@
+// ✨ CÓDIGO ATUALIZADO AQUI
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import LoginPage from './pages/LoginPage';
 import PlanejamentoRotaPage from './pages/PlanejamentoRotaPage';
 import CriarRotaPage from './pages/CriarRotaPage';
-/* ✨ ALTERAÇÃO AQUI: Importa a nova página de Pontos de Coleta */
 import PontosColetaPage from './pages/PontosColetaPage';
+/* ✨ ALTERAÇÃO AQUI: Importa a nova página de Rotas que vamos criar */
+import RotasPage from './pages/RotasPage';
 
 function App() {
   return (
@@ -24,10 +26,15 @@ function App() {
         element={<Layout><CriarRotaPage /></Layout>} 
       />
 
-      {/* ✨ ALTERAÇÃO AQUI: Adiciona a rota para a página de Pontos de Coleta */}
       <Route 
         path="/pontos-coleta" 
         element={<Layout><PontosColetaPage /></Layout>} 
+      />
+
+      {/* ✨ ALTERAÇÃO AQUI: Adiciona a rota para a nova página de Rotas */}
+      <Route 
+        path="/rotas" 
+        element={<Layout><RotasPage /></Layout>} 
       />
       
     </Routes>

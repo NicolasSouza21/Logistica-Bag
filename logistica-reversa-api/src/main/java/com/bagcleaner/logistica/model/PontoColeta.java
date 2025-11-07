@@ -1,34 +1,43 @@
+// ✨ CÓDIGO ATUALIZADO AQUI
 package com.bagcleaner.logistica.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList; // ✨ ALTERAÇÃO AQUI
+import java.util.List; // ✨ ALTERAÇÃO AQUI
 
 @Entity
 @Table(name = "pontos_coleta")
 @Data
 public class PontoColeta {
 
-    /* ✨ ALTERAÇÃO AQUI: Criamos um Enum para os tipos de bag */
-    public enum TipoBag {
-        PADRAO,
-        GRANDE,
-        REFRIGERADO,
-        ESPECIAL
-    }
+    /* ✨ ALTERAÇÃO AQUI: Removemos o Enum TipoBag */
+    // public enum TipoBag { ... }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // O "Nome empresa" do seu pedido será o campo 'nome' do Ponto de Coleta
     private String nome; 
     private String enderecoCompleto;
+    private String contatoResponsavel;
 
-    /* ✨ ALTERAÇÃO AQUI: Novos campos adicionados */
-    private String contatoResponsavel; // Campo para "Quem procurar"
+    /* ✨ ALTERAÇÃO AQUI: Removemos o campo antigo */
+    // @Enumerated(EnumType.STRING)
+    // private TipoBag tipoBag;
+    
+    /* ✨ ALTERAÇÃO AQUI: Adicionamos um ElementCollection */
+    /**
+     * Armazena uma lista de nomes de bags customizados para este ponto.
+     * O JPA criará uma tabela separada (ex: ponto_coleta_tipos_bag)
+     * para vincular o ID do PontoColeta a uma lista de Strings.
+     */
+    @ElementCollection(fetch = FetchType.EAGER) // EAGER para carregar a lista junto com o Ponto
+    @CollectionTable(name = "ponto_coleta_tipos_bag", joinColumns = @JoinColumn(name = "ponto_coleta_id"))
+    @Column(name = "tipo_bag_nome") // Nome da coluna que vai guardar o nome do bag
+    private List<String> tiposBag = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING) // Garante que o texto do enum seja salvo no banco
-    private TipoBag tipoBag;
 
     private Double latitude;
     private Double longitude;

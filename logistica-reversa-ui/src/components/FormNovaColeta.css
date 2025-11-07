@@ -89,3 +89,38 @@
   margin-top: 1rem;
   text-align: center;
 }
+/* ... (seu css existente) ... */
+
+/* ✨ ALTERAÇÃO AQUI: Estilos para os campos de bag dinâmicos */
+
+.form-group-dynamic-bags {
+  margin-top: 1.5rem;
+  border-top: 1px solid #eee;
+  padding-top: 1.5rem;
+}
+
+.form-group-dynamic-bags > label {
+  /* Título "Quantidades por Tipo de Bag" */
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.dynamic-bag-input {
+  display: flex; /* Alinha o nome do bag e o input lado a lado */
+  justify-content: space-between; /* Coloca um em cada ponta */
+  align-items: center; /* Centraliza verticalmente */
+  margin-bottom: 0.75rem;
+}
+
+.dynamic-bag-input label {
+  font-weight: 500;
+  color: #555;
+  flex-grow: 1; /* Faz o label ocupar o espaço */
+}
+
+.dynamic-bag-input input {
+  width: 80px; /* Define uma largura fixa para o input de número */
+  text-align: center;
+}

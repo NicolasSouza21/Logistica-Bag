@@ -1,4 +1,4 @@
-// ✨ CÓDIGO NOVO AQUI
+// ✨ CÓDIGO ATUALIZADO AQUI
 package com.bagcleaner.logistica.dto;
 
 import com.bagcleaner.logistica.model.Rota;
@@ -15,6 +15,9 @@ public class RotaCriadaDTO {
     private LocalDateTime dataCriacao;
     private int totalOrdensServico;
 
+    /* ✨ ALTERAÇÃO AQUI: Adiciona o valor do frete ao DTO de resposta */
+    private Double valorFrete;
+
     // Método de fábrica para converter a entidade Rota para este DTO
     public static RotaCriadaDTO fromEntity(Rota rota) {
         RotaCriadaDTO dto = new RotaCriadaDTO();
@@ -23,6 +26,10 @@ public class RotaCriadaDTO {
         dto.setStatus(rota.getStatus().toString());
         dto.setDataCriacao(rota.getDataCriacao());
         dto.setTotalOrdensServico(rota.getOrdensServico() != null ? rota.getOrdensServico().size() : 0);
+
+        /* ✨ ALTERAÇÃO AQUI: Mapeia o valor do frete da entidade para o DTO */
+        dto.setValorFrete(rota.getValorFrete());
+
         return dto;
     }
 }

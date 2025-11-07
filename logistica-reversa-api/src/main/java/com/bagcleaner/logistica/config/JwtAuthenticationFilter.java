@@ -1,4 +1,4 @@
-// ✨ CÓDIGO NOVO AQUI
+// ✨ CÓDIGO ATUALIZADO AQUI
 package com.bagcleaner.logistica.config;
 
 import com.bagcleaner.logistica.service.JwtService;
@@ -32,6 +32,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
+        // ✨ ALTERAÇÃO AQUI: Verifica se a requisição é para a API de login
+        // Se for, nós pulamos o filtro e deixamos o Spring Security continuar
+        // Isso permite que o usuário faça login mesmo se tiver um token expirado no header
+        if (request.getServletPath().contains("/api/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // 1. Pega o cabeçalho 'Authorization' da requisição
         final String authHeader = request.getHeader("Authorization");
 
@@ -43,7 +51,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 3. Extrai o token do cabeçalho (removendo o prefixo "Bearer ")
         final String jwt = authHeader.substring(7);
-        final String username = jwtService.extractUsername(jwt);
+        final String username; // ✨ ALTERAÇÃO AQUI: movida a declaração
+
+        try { // ✨ ALTERAÇÃO AQUI: Adiciona um try-catch para o erro de token expirado
+            username = jwtService.extractUsername(jwt);
+        } catch (Exception e) {
+            // Se o token estiver expirado ou inválido, apenas continue o filtro.
+            // O Spring Security vai barrar o acesso à rota protegida mais tarde.
+            filterChain.doFilter(request, response);
+            return;
+        }
+
 
         // 4. Se temos um usuário e ele ainda não está autenticado no contexto de segurança...
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -52,10 +70,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 5. Se o token for válido...
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 // ...cria um objeto de autenticação e o define no contexto de segurança.
-                // Isso informa ao Spring Security que o usuário atual está autenticado.
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
-                        null, // Credenciais são nulas pois já foram validadas pelo token
+                        null, 
                         userDetails.getAuthorities()
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

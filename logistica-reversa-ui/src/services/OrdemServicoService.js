@@ -1,9 +1,13 @@
+// ✨ CÓDIGO ATUALIZADO AQUI
 import api from './api';
 
+/**
+ * Busca todas as ordens de serviço que correspondem a um status específico.
+ */
 const getOrdensPorStatus = async (status) => {
   try {
     const response = await api.get('/api/ordens-servico', {
-      params: { status }
+      params: { status } 
     });
     return response.data;
   } catch (error) {
@@ -12,12 +16,31 @@ const getOrdensPorStatus = async (status) => {
   }
 };
 
-const criarOrdem = async (pontoColetaId, quantidadeEstimada) => {
+/**
+ * Busca os detalhes completos de uma lista de ordens de serviço por seus IDs.
+ */
+const getOrdensByIds = async (ids) => {
   try {
-    const response = await api.post('/api/ordens-servico', {
-      pontoColetaId,
-      quantidadeEstimada,
-    });
+    // O backend espera os IDs como uma lista no corpo da requisição
+    const response = await api.post('/api/ordens-servico/by-ids', ids); 
+    return response.data;
+  } catch (error) {
+    console.error(`Erro ao buscar ordens por IDs:`, error);
+    throw error;
+  }
+};
+
+
+/* ✨ ALTERAÇÃO AQUI: O método agora recebe um único objeto 'ordemData' */
+/**
+ * Cria uma nova ordem de serviço.
+ * @param {Object} ordemData - Objeto contendo { pontoColetaId, quantidadesEstimadas (Map) }
+ * @returns {Promise<Object>} A nova ordem de serviço criada.
+ */
+const criarOrdem = async (ordemData) => {
+  try {
+    // O backend espera um DTO { pontoColetaId, quantidadesEstimadas: {...} }
+    const response = await api.post('/api/ordens-servico', ordemData);
     return response.data;
   } catch (error) {
     console.error("Erro ao criar ordem de serviço:", error);
@@ -25,27 +48,10 @@ const criarOrdem = async (pontoColetaId, quantidadeEstimada) => {
   }
 };
 
-/* ✨ ALTERAÇÃO AQUI: Adiciona a função que estava faltando */
-/**
- * Busca os detalhes completos de uma lista de ordens de serviço a partir de seus IDs.
- * @param {number[]} ids - Um array com os IDs das ordens.
- * @returns {Promise<Array>} Uma lista com os detalhes das ordens de serviço.
- */
-const getOrdensByIds = async (ids) => {
-  try {
-    // Faz a chamada POST para o endpoint /by-ids que criamos no backend
-    const response = await api.post('/api/ordens-servico/by-ids', ids);
-    return response.data;
-  } catch (error) {
-    console.error("Erro ao buscar ordens por IDs:", error);
-    throw error;
-  }
-};
-
 const OrdemServicoService = {
   getOrdensPorStatus,
+  getOrdensByIds, // ✨ Verifique se você tem esse método
   criarOrdem,
-  getOrdensByIds, // ✨ ALTERAÇÃO AQUI: Exporta a nova função
 };
 
 export default OrdemServicoService;

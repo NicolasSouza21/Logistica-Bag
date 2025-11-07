@@ -1,4 +1,4 @@
-// ✨ CÓDIGO NOVO AQUI
+// ✨ CÓDIGO ATUALIZADO AQUI
 package com.bagcleaner.logistica.dto;
 
 import lombok.Data;
@@ -18,4 +18,7 @@ public class CriarRotaRequestDTO {
 
     // A duração total estimada formatada (ex: "45 min").
     private String duracaoEstimada;
+
+    /* ✨ ALTERAÇÃO AQUI: Novo campo para receber o valor do frete */
+    private Double valorFrete;
 }

@@ -1,10 +1,23 @@
-import React, { useState, useEffect } from 'react';
+// ✨ CÓDIGO ATUALIZADO AQUI
+import React, { useState, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
+import { decode } from '@googlemaps/polyline-codec'; 
 import OrdemServicoService from '../services/OrdemServicoService';
 import RotaService from '../services/RotaService';
 import OrdemCard from '../components/OrdemCard';
 import './CriarRotaPage.css';
+import '../components/FormPontoColeta.css';
+
+function FitBoundsToPolyline({ polyline }) {
+  const map = useMap(); 
+  useEffect(() => {
+    if (polyline && polyline.length > 0) {
+      map.fitBounds(polyline); 
+    }
+  }, [polyline, map]);
+  return null; 
+}
 
 function CriarRotaPage() {
     const navigate = useNavigate();
@@ -15,6 +28,14 @@ function CriarRotaPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [salvando, setSalvando] = useState(false);
+    const [valorFrete, setValorFrete] = useState('');
+
+    const decodedPolyline = useMemo(() => {
+        if (state?.polyline) {
+            return decode(state.polyline);
+        }
+        return [];
+    }, [state?.polyline]);
 
     useEffect(() => {
         if (!state || !state.ordemIds || state.ordemIds.length === 0) {
@@ -25,10 +46,10 @@ function CriarRotaPage() {
         const fetchDetalhesOrdens = async () => {
             try {
                 setLoading(true);
+                // Assumindo que o método no service JS se chama 'getOrdensByIds'
                 const data = await OrdemServicoService.getOrdensByIds(state.ordemIds);
                 setOrdens(data);
             } catch (err) {
-                // ✨ ALTERAÇÃO AQUI: Mensagem de erro mais específica que vimos na imagem
                 setError('Não foi possível carregar os detalhes das ordens.');
             } finally {
                 setLoading(false);
@@ -39,6 +60,11 @@ function CriarRotaPage() {
     }, [state, navigate]);
 
     const handleSalvarRota = async () => {
+        if (!valorFrete || parseFloat(valorFrete) <= 0) {
+            setError('Por favor, insira um valor de frete válido.');
+            return;
+        }
+
         setSalvando(true);
         setError('');
         try {
@@ -46,9 +72,10 @@ function CriarRotaPage() {
                 ordemIds: state.ordemIds,
                 distanciaTotal: state.distanciaTotal,
                 duracaoEstimada: state.duracaoEstimada,
+                valorFrete: parseFloat(valorFrete)
             };
             await RotaService.criarRotaPlanejada(criarRotaRequest);
-            navigate('/planejamento');
+            navigate('/rotas'); // Ajuste: talvez você queira ir para /planejamento?
         } catch (err) {
             setError('Erro ao salvar a rota. Tente novamente.');
         } finally {
@@ -56,7 +83,13 @@ function CriarRotaPage() {
         }
     };
     
-    const posicaoInicialMapa = [-23.55052, -46.633308];
+    const posicaoInicialMapa = [-23.55052, -46.633308]; 
+
+    /* ✨ 1. ALTERAÇÃO AQUI: Calcula o total de bags */
+    const totalBags = ordens.reduce((total, ordem) => {
+      // Soma o total + a quantidadeEstimada de cada ordem
+      return total + (Number(ordem.quantidadeEstimada) || 0);
+    }, 0); // Começa a soma do 0
 
     if (loading) {
         return <div className="loading-message">Carregando detalhes da rota...</div>;
@@ -80,19 +113,34 @@ function CriarRotaPage() {
 
             <div className="rota-info-bar">
                 <span><strong>Ordens na Rota:</strong> {ordens.length}</span>
+                
+                {/* ✨ 2. ALTERAÇÃO AQUI: Adiciona o total de bags na barra */}
+                <span><strong>Total de Bags:</strong> {totalBags}</span>
+                
                 <span><strong>Distância Estimada:</strong> {state?.distanciaTotal || 'N/A'}</span>
                 <span><strong>Duração Estimada:</strong> {state?.duracaoEstimada || 'N/A'}</span>
+                <div className="form-group-inline"> 
+                    <label htmlFor="valor-frete">Valor do Frete (R$):</label>
+                    <input
+                        type="number"
+                        id="valor-frete"
+                        value={valorFrete}
+                        onChange={(e) => setValorFrete(e.target.value)}
+                        placeholder="Ex: 150.00"
+                        min="0"
+                        step="0.01"
+                        required
+                    />
+                </div>
             </div>
 
             <div className="rota-layout">
                 <div className="rota-lista-ordens">
-                    {/* ✨ ALTERAÇÃO AQUI: Passamos as props que faltavam para o OrdemCard */}
                     {ordens.map(ordem => (
                         <OrdemCard 
                             key={ordem.id} 
                             ordem={ordem} 
-                            isSelected={true}      // O card já está selecionado por padrão
-                            onSelect={() => {}}    // Passa uma função vazia para evitar o erro
+                            // isSelected e onSelect não são necessários aqui
                         />
                     ))}
                 </div>
@@ -102,16 +150,23 @@ function CriarRotaPage() {
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
+                        
                         {ordens.map(ordem => 
-                            (ordem.pontoColeta?.latitude && ordem.pontoColeta?.longitude) && (
-                                <Marker key={ordem.id} position={[ordem.pontoColeta.latitude, ordem.pontoColeta.longitude]}>
+                            (ordem.latitude && ordem.longitude) && ( 
+                                <Marker key={ordem.id} position={[ordem.latitude, ordem.longitude]}>
                                     <Popup>
-                                        <strong>{ordem.pontoColeta.nome}</strong><br/>
-                                        {ordem.pontoColeta.enderecoCompleto}
+                                        <strong>{ordem.nomePontoColeta}</strong><br/>
+                                        {ordem.enderecoPontoColeta}
                                     </Popup>
                                 </Marker>
                             )
                         )}
+
+                        {decodedPolyline.length > 0 && (
+                            <Polyline pathOptions={{ color: 'blue', weight: 5 }} positions={decodedPolyline} />
+                        )}
+
+                        <FitBoundsToPolyline polyline={decodedPolyline} />
                     </MapContainer>
                 </div>
             </div>

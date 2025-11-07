@@ -30,6 +30,7 @@ th, td {
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #e2e8f0; /* Linha divisória cinza claro */
   white-space: nowrap; /* Impede que o texto quebre em várias linhas */
+  vertical-align: middle; /* Alinha o conteúdo ao meio */
 }
 
 /* Remove a borda da última linha para um acabamento limpo */
@@ -68,4 +69,99 @@ tbody tr:hover {
 tbody td:first-child {
   font-weight: 600;
   color: #1e293b; /* Texto mais escuro para dar ênfase */
+}
+
+/*
+  -- CAMPO DE BUSCA NO CABEÇALHO (Adicionado anteriormente) --
+*/
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-header-search-input {
+  flex-grow: 1; 
+  margin: 0 2rem; 
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #1e293b;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.page-header-search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+
+/* ... (Estilos de status da RotasPage que já estavam aqui) ... */
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.status-planejada {
+  color: var(--status-pendente-text); 
+  background-color: var(--status-pendente-bg);
+}
+.status-aprovada {
+  color: #166534;
+  background-color: #dcfce7;
+}
+span.status-aprovada {
+  font-weight: 600;
+  color: var(--color-success);
+}
+td .btn-primary {
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+}
+
+/* ✨ ALTERAÇÃO AQUI: Estilos para os botões de Ação (Editar/Excluir) */
+
+/* A célula que contém os botões */
+.td-actions {
+  display: flex;
+  gap: 0.5rem; /* Espaço entre os botões */
+}
+
+/* Estilo base para os botões de ação */
+.btn-action {
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: 0.5rem; /* 8px */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Estilo do botão Editar (cores secundárias) */
+.btn-edit {
+  background-color: #ffffff; /* Branco */
+  color: #64748b; /* Cinza médio */
+  border-color: #e2e8f0; /* Borda cinza claro */
+}
+.btn-edit:hover {
+  border-color: #3b82f6; /* Borda azul */
+  color: #3b82f6; /* Texto azul */
+  background-color: #f8fafc;
+}
+
+/* Estilo do botão Excluir (cores de perigo) */
+.btn-delete {
+  background-color: #fef2f2; /* Fundo vermelho bem claro */
+  color: #b91c1c; /* Texto vermelho escuro */
+  border-color: #fecaca; /* Borda vermelha clara */
+}
+.btn-delete:hover {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
 }

@@ -2,13 +2,31 @@
 import api from './api';
 
 /**
- * Envia uma lista de endereços para o backend para calcular a rota otimizada.
- * @param {string[]} enderecos - Uma lista de strings, onde cada string é um endereço.
- * @returns {Promise<Object>} Um objeto com a distância e duração total.
+ * Calcula rota no backend.
+ * ✅ Suporta dois formatos:
+ * 1) calcularRota({ enderecos: [...] })
+ * 2) calcularRota({ coordenadas: [...] })
+ *
+ * @param {{ enderecos?: string[], coordenadas?: string[] }} payload
+ * @returns {Promise<Object>} Um objeto com distanciaTotal, duracaoEstimada e (se existir) polyline.
  */
-const calcularRota = async (enderecos) => {
+const calcularRota = async (payload) => {
   try {
-    const response = await api.post('/api/rotas/calcular', { enderecos });
+    // ✨ ALTERAÇÃO AQUI: valida formato do payload
+    if (!payload || typeof payload !== 'object') {
+      throw new Error('Payload inválido. Use { enderecos: [...] } ou { coordenadas: [...] }.');
+    }
+
+    const { enderecos, coordenadas } = payload;
+
+    if ((!enderecos || enderecos.length === 0) && (!coordenadas || coordenadas.length === 0)) {
+      throw new Error('Envie uma lista de endereços ou coordenadas para calcular a rota.');
+    }
+
+    // ✨ ALTERAÇÃO AQUI: envia exatamente o que o backend espera (enderecos OU coordenadas)
+    const body = enderecos ? { enderecos } : { coordenadas };
+
+    const response = await api.post('/api/rotas/calcular', body);
     return response.data;
   } catch (error) {
     console.error('Erro ao chamar a API de cálculo de rota:', error);
@@ -23,7 +41,6 @@ const calcularRota = async (enderecos) => {
  */
 const criarRotaPlanejada = async (rotaData) => {
   try {
-    // Faz a chamada POST para o endpoint que criamos no RotaController do backend
     const response = await api.post('/api/rotas', rotaData);
     return response.data;
   } catch (error) {
@@ -31,8 +48,6 @@ const criarRotaPlanejada = async (rotaData) => {
     throw error;
   }
 };
-
-/* ✨ ALTERAÇÃO AQUI: Novas funções para listar e aprovar rotas */
 
 /**
  * Busca todas as rotas cadastradas.
@@ -63,12 +78,11 @@ const aprovarRota = async (rotaId) => {
   }
 };
 
-
 const RotaService = {
   calcularRota,
   criarRotaPlanejada,
-  getRotas, // ✨ ADIÇÃO AQUI
-  aprovarRota, // ✨ ADIÇÃO AQUI
+  getRotas,
+  aprovarRota,
 };
 
 export default RotaService;

@@ -1,153 +1,300 @@
-/* ✨ ARQUIVO FINAL CORRIGIDO: src/pages/PlanejamentoRotaPage.css */
+/* ✨ ARQUIVO ATUALIZADO AQUI */
+
+:root {
+  /* ✨ ALTERAÇÃO AQUI: tokens simples para padronizar visual */
+  --bg: #f6f8fc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-soft: 0 2px 10px rgba(15, 23, 42, 0.06);
+  --primary: #2563eb;
+  --primary-700: #1d4ed8;
+  --danger: #ef4444;
+  --warn-bg: #fff7ed;
+  --info-bg: #eff6ff;
+  --ok-bg: #ecfdf5;
+}
 
 .page-container {
-  width: 100%;
+  background: var(--bg);
+  min-height: 100vh;
+  padding: 28px;
+  color: var(--text);
 }
 
-/*
-  -- CABEÇALHO DA PÁGINA COM DIVISÓRIA --
-  Cria uma linha de separação clara abaixo do título principal.
-*/
 .page-header {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #e2e8f0; /* Cinza claro para a borda */
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 22px;
 }
 
-.page-header h1 {
-  font-size: 1.875rem; /* 30px */
-  font-weight: 700;
-  color: #1e293b; /* Cinza escuro */
+.page-title h1 {
+  margin: 0;
+  font-size: 34px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
-/*
-  -- BOTÕES COM CORES DIRETAS E INTUITIVAS --
-  As cores agora são aplicadas diretamente, sem variáveis, para garantir a mudança.
-*/
-.btn {
-  padding: 0.6rem 1.2rem;
-  border-radius: 0.5rem; /* 8px */
-  cursor: pointer;
-  font-size: 0.9rem;
+.page-eyebrow {
+  margin: 0 0 6px 0;
+  color: var(--muted);
   font-weight: 600;
-  border: 1px solid transparent;
-  transition: all 0.2s ease-in-out;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
-/* Botão de Ação Primária (ex: + Nova Coleta) */
-.btn-primary {
-  background-color: #3b82f6; /* Azul */
-  color: white;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+.page-subtitle {
+  margin: 8px 0 0 0;
+  color: var(--muted);
+  font-size: 14px;
 }
 
-.btn-primary:hover {
-  background-color: #60a5fa; /* Azul mais claro */
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  transform: translateY(-2px);
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* Botão de Ação Secundária (ex: Criar Rota) */
-.btn-secondary {
-  background-color: #ffffff; /* Branco */
-  color: #64748b; /* Cinza médio */
-  border-color: #e2e8f0; /* Borda cinza claro */
-}
-
-.btn-secondary:hover {
-  border-color: #3b82f6; /* Borda azul */
-  color: #3b82f6; /* Texto azul */
-}
-
-.btn:disabled {
-  background-color: #e2e8f0; /* Cinza claro */
-  color: #94a3b8; /* Cinza médio */
-  cursor: not-allowed;
-  border-color: transparent;
-  box-shadow: none;
-  transform: none;
-}
-
-/*
-  -- CARDS DE INDICADORES (KPIs) COM BORDAS E SOMBRAS --
-  Cada card tem sua própria borda e sombra, garantindo a separação visual.
-*/
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 18px 0 22px 0;
 }
 
 .kpi-card {
-  background-color: #ffffff; /* Fundo branco */
-  padding: 1.5rem;
-  border-radius: 0.5rem; /* 8px */
-  border: 1px solid #e2e8f0; /* Borda que define o container */
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  padding: 16px;
   display: flex;
-  flex-direction: column;
-  transition: transform 0.2s, box-shadow 0.2s;
+  align-items: center;
+  gap: 14px;
 }
 
-.kpi-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+.kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  border: 1px solid var(--border);
+}
+
+.kpi-icon-warn { background: var(--warn-bg); }
+.kpi-icon-info { background: var(--info-bg); }
+.kpi-icon-ok   { background: var(--ok-bg); }
+
+.kpi-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .kpi-title {
-  color: #64748b; /* Cinza médio */
-  font-weight: 500;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .kpi-value {
-  font-size: 2.25rem; /* 36px */
-  font-weight: 700;
-  margin-top: 0.5rem;
-  color: #1e293b; /* Cinza escuro */
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
-/*
-  -- CARD DE CONTEÚDO PRINCIPAL COM DIVISÃO INTERNA --
-  Container principal com sua própria borda e uma linha interna que
-  separa o título da lista de chamados.
-*/
 .content-card {
-  background-color: #ffffff; /* Fundo branco */
-  border-radius: 0.5rem; /* 8px */
-  border: 1px solid #e2e8f0; /* Borda principal do container */
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  padding: 1.5rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 18px;
 }
 
 .card-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #e2e8f0; /* Linha de separação interna */
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 14px;
 }
 
-.card-header h2 {
-  font-size: 1.25rem;
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-title h2 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+
+.card-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #0f172a;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--border);
+}
+
+.rota-calculator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ✨ ALTERAÇÃO AQUI: melhora visual dos botões sem depender de framework */
+.btn {
+  border: 1px solid transparent;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.05s ease, background 0.2s ease, border-color 0.2s ease;
+  user-select: none;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-pill {
+  border-radius: 999px;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary:hover {
+  background: var(--primary-700);
+}
+
+.btn-secondary {
+  background: #eef2ff;
+  color: #1e3a8a;
+  border-color: #dbeafe;
+}
+
+.btn-secondary:hover {
+  background: #e0e7ff;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.alert {
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 12px 0;
   font-weight: 600;
-  color: #1e293b;
+  border: 1px solid var(--border);
 }
 
-/*
-  -- ESTADO VAZIO COM DESTAQUE --
-  O aviso de "Nenhuma coleta" agora tem uma borda tracejada para
-  indicar uma área de conteúdo vazia de forma mais clara.
-*/
+.alert-error {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.alert-loading {
+  background: #f8fafc;
+  border-color: var(--border);
+  color: var(--muted);
+}
+
 .empty-state {
-  text-align: center;
-  padding: 3rem;
-  color: #64748b; /* Cinza médio */
-  border: 1px dashed #e2e8f0; /* Borda tracejada */
-  border-radius: 0.5rem; /* 8px */
-  margin-top: 1rem;
+  margin: 16px 0 10px 0;
+  border: 1px dashed #cbd5e1;
+  border-radius: 18px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #fbfdff;
+}
+
+.empty-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: #f1f5f9;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  border: 1px solid var(--border);
+}
+
+.empty-text h3 {
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+
+.empty-text p {
+  margin: 6px 0 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.ordem-list {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+/* ✨ ALTERAÇÃO AQUI: responsividade */
+@media (max-width: 920px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-actions {
+    justify-content: flex-start;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rota-calculator {
+    justify-content: flex-start;
+  }
+
+  .empty-state {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
